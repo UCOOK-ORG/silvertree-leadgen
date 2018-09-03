@@ -1,0 +1,330 @@
+﻿@model LeadGeneration.Models.Campaign
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center ">Edit Campaign</h1>
+<div class="p-l-30 p-r-30 m-t-50">
+    <div class="row">
+        <form asp-action="Edit">
+            <input asp-for="Id" type="hidden" />
+            <input asp-for="OrganisationId" type="hidden" />
+            <input asp-for="CampaignContentId" type="hidden" />
+            <input asp-for="CampaignSettingsId" type="hidden" />
+            <input asp-for="CampaignContent.SignUpPageId" type="hidden" />
+            <input asp-for="CampaignContent.StatusPageId" type="hidden" />
+            <input asp-for="CampaignContent.SocialContentId" type="hidden" />
+            <input asp-for="CampaignContent.TermsAndConditionsId" type="hidden" />
+
+            <div class="panel panel-group panel-transparent" data-toggle="collapse" id="accordion">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseOne">Basic Settings</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseOne">
+                        <div class="panel-body">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Slug" class="control-label"></label>
+                                    <input asp-for="Slug" class="form-control" />
+                                    <span asp-validation-for="Slug" class="text-danger"></span>
+                                </div>
+                                
+
+                                <div class="form-group">
+
+                                    <label asp-for="CampaignContent.BackgroundImage" class="control-label"></label>
+                                    <div class="col-md-12">
+                                        <div class="col-md-6">
+                                            <input asp-for="CampaignContent.BackgroundImage" class="form-control" />
+                                        </div>
+                                        <div class="col-md-6">
+                                            <img src="@String.Format(Model.CampaignContent.BackgroundCloudinaryImage.BaseUrl+ "h_150,c_fill/" + Model.CampaignContent.BackgroundCloudinaryImage.RelativePath)" />
+                                        </div>
+                                    </div>
+                                    <span asp-validation-for="CampaignContent.BackgroundImage" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CampaignContent.FooterText" class="control-label"></label>
+                                    <input asp-for="CampaignContent.FooterText" class="form-control" />
+                                    <span asp-validation-for="CampaignContent.FooterText" class="text-danger"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="" data-parent="#accordion" data-toggle="collapse" href="#collapseTwo">Campaign Settings</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse in" id="collapseTwo">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label asp-for="CampaignSettings.LeadSubjectLine" class="control-label"></label>
+                                <input asp-for="CampaignSettings.LeadSubjectLine" class="form-control" />
+                                <span asp-validation-for="CampaignSettings.LeadSubjectLine" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignSettings.MandrillLeadTemplate" class="control-label"></label>
+                                <input asp-for="CampaignSettings.MandrillLeadTemplate" class="form-control" />
+                                <span asp-validation-for="CampaignSettings.MandrillLeadTemplate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignSettings.ReferralSubjectLine" class="control-label"></label>
+                                <input asp-for="CampaignSettings.ReferralSubjectLine" class="form-control" />
+                                <span asp-validation-for="CampaignSettings.ReferralSubjectLine" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignSettings.MandrillReferralTemplate" class="control-label"></label>
+                                <input asp-for="CampaignSettings.MandrillReferralTemplate" class="form-control" />
+                                <span asp-validation-for="CampaignSettings.MandrillReferralTemplate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignSettings.CampaignEndDate" class="control-label"></label>
+                                <input asp-for="CampaignSettings.CampaignEndDate" class="form-control" />
+                                <span asp-validation-for="CampaignSettings.CampaignEndDate" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignSettings.CampaignStartDate" class="control-label"></label>
+                                <input asp-for="CampaignSettings.CampaignStartDate" class="form-control" />
+                                <span asp-validation-for="CampaignSettings.CampaignStartDate" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseThree">Sign Up Page</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseThree">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.SignUpPage.MainText" class="control-label"></label>
+                                <input asp-for="CampaignContent.SignUpPage.MainText" class="form-control" />
+                                <span asp-validation-for="CampaignContent.SignUpPage.MainText" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.SignUpPage.SecondaryText" class="control-label"></label>
+                                <input asp-for="CampaignContent.SignUpPage.SecondaryText" class="form-control" />
+                                <span asp-validation-for="CampaignContent.SignUpPage.SecondaryText" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.SignUpPage.HeaderImage" class="control-label"></label>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <input asp-for="CampaignContent.SignUpPage.HeaderImage" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img src="@String.Format(Model.CampaignContent.SignUpPage.HeaderCloudinaryImage.BaseUrl+ "h_150,c_fill/" + Model.CampaignContent.SignUpPage.HeaderCloudinaryImage.RelativePath)" />
+                                    </div>
+                                </div>
+                                <span asp-validation-for="CampaignContent.SignUpPage.HeaderImage" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.SignUpPage.FooterImage" class="control-label"></label>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <input asp-for="CampaignContent.SignUpPage.FooterImage" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img src="@String.Format(Model.CampaignContent.SignUpPage.FooterCloudinaryImage.BaseUrl+ "h_150,c_fill/" + Model.CampaignContent.SignUpPage.FooterCloudinaryImage.RelativePath)" />
+                                    </div>
+                                </div>
+                                <span asp-validation-for="CampaignContent.SignUpPage.FooterImage" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseStatus">Status Page</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseStatus">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.StatusPage.MainText" class="control-label"></label>
+                                <input asp-for="CampaignContent.StatusPage.MainText" class="form-control" />
+                                <span asp-validation-for="CampaignContent.StatusPage.MainText" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.StatusPage.SecondaryText" class="control-label"></label>
+                                <input asp-for="CampaignContent.StatusPage.SecondaryText" class="form-control" />
+                                <span asp-validation-for="CampaignContent.StatusPage.SecondaryText" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.StatusPage.HeaderImage" class="control-label"></label>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <input asp-for="CampaignContent.StatusPage.HeaderImage" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img src="@String.Format(Model.CampaignContent.StatusPage.HeaderCloudinaryImage.BaseUrl+ "h_150,c_fill/" + Model.CampaignContent.StatusPage.HeaderCloudinaryImage.RelativePath)" />
+                                    </div>
+                                </div>
+                                <span asp-validation-for="CampaignContent.StatusPage.HeaderImage" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.StatusPage.FooterImage" class="control-label"></label>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <input asp-for="CampaignContent.StatusPage.FooterImage" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img src="@String.Format(Model.CampaignContent.StatusPage.FooterCloudinaryImage.BaseUrl+ "h_150,c_fill/" + Model.CampaignContent.StatusPage.FooterCloudinaryImage.RelativePath)" />
+                                    </div>
+                                </div>
+                                <span asp-validation-for="CampaignContent.StatusPage.FooterImage" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseSocial">Social Content</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseSocial">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.SocialContent.FacebookTitle" class="control-label"></label>
+                                <input asp-for="CampaignContent.SocialContent.FacebookTitle" class="form-control" />
+                                <span asp-validation-for="CampaignContent.SocialContent.FacebookTitle" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.SocialContent.FacebookDescription" class="control-label"></label>
+                                <input asp-for="CampaignContent.SocialContent.FacebookDescription" class="form-control" />
+                                <span asp-validation-for="CampaignContent.SocialContent.FacebookDescription" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.SocialContent.FacebookImage" class="control-label"></label>
+                                <div class="col-md-12">
+                                    <div class="col-md-6">
+                                        <input asp-for="CampaignContent.SocialContent.FacebookImage" class="form-control" />
+                                    </div>
+                                    <div class="col-md-6">
+                                        <img src="@String.Format(Model.CampaignContent.SocialContent.FacebookCloudinaryImage.BaseUrl+ "h_150,c_fill/" + Model.CampaignContent.SocialContent.FacebookCloudinaryImage.RelativePath)" />
+                                    </div>
+                                </div>
+                                <span asp-validation-for="CampaignContent.SocialContent.FacebookImage" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.SocialContent.TwitterMessage" class="control-label"></label>
+                                <input asp-for="CampaignContent.SocialContent.TwitterMessage" class="form-control" />
+                                <span asp-validation-for="CampaignContent.SocialContent.TwitterMessage" class="text-danger"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseTermsAndCondtions">Terms And Conditions</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseTermsAndCondtions">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.TermsAndConditions.Title" class="control-label"></label>
+                                <input asp-for="CampaignContent.TermsAndConditions.Title" class="form-control" />
+                                <span asp-validation-for="CampaignContent.TermsAndConditions.Title" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="CampaignContent.TermsAndConditions.Content" class="control-label"></label>
+                                <textarea asp-for="CampaignContent.TermsAndConditions.Content" class="form-control" ></textarea>
+                                <span asp-validation-for="CampaignContent.TermsAndConditions.Content" class="text-danger"></span>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{ await Html.RenderPartialAsync("_ValidationScriptsPartial"); }
+
+
+    <script src="//widget.cloudinary.com/global/all.js" type="text/javascript"></script>
+    <script type="text/javascript">
+
+        $('#CampaignContent_SocialContent_FacebookImage').cloudinary_upload_widget(
+            {
+                cloud_name: 'ucook',
+                upload_preset: 'dt58jx8z',
+                cropping: 'server',
+                folder: 'backend_uploads'
+            },
+            function (error, result) { console.log(error, result) });
+
+        $('#CampaignContent_StatusPage_FooterImage').cloudinary_upload_widget(
+            {
+                cloud_name: 'ucook',
+                upload_preset: 'dt58jx8z',
+                cropping: 'server',
+                folder: 'backend_uploads'
+            },
+            function (error, result) { console.log(error, result) });
+
+        $('#CampaignContent_StatusPage_HeaderImage').cloudinary_upload_widget(
+            {
+                cloud_name: 'ucook',
+                upload_preset: 'dt58jx8z',
+                cropping: 'server',
+                folder: 'backend_uploads'
+            },
+            function (error, result) { console.log(error, result) });
+
+        $('#CampaignContent_SignUpPage_HeaderImage').cloudinary_upload_widget(
+            {
+                cloud_name: 'ucook',
+                upload_preset: 'dt58jx8z',
+                cropping: 'server',
+                folder: 'backend_uploads'
+            },
+            function (error, result) { console.log(error, result) });
+
+        $('#CampaignContent_SignUpPage_FooterImage').cloudinary_upload_widget(
+            {
+                cloud_name: 'ucook',
+                upload_preset: 'dt58jx8z',
+                cropping: 'server',
+                folder: 'backend_uploads'
+            },
+            function (error, result) { console.log(error, result) });
+
+        $('#CampaignContent_BackgroundImage').cloudinary_upload_widget(
+            {
+                cloud_name: 'ucook',
+                upload_preset: 'dt58jx8z',
+                cropping: 'server',
+                folder: 'backend_uploads'
+            },
+            function (error, result) { console.log(error, result) });
+    </script>
+
+}

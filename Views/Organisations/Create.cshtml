@@ -1,0 +1,117 @@
+﻿@model LeadGeneration.Models.Organisation
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1 class="text-center ">Create new Organisation</h1>
+<div class="p-l-30 p-r-30 m-t-50">
+    <div class="row">
+        <form asp-action="Create">
+            <div class="panel panel-group panel-transparent" data-toggle="collapse" id="accordion">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#collapseOne">Organisation Info</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="collapseOne">
+                        <div class="panel-body">
+                            <div class="col-md-6">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label"></label>
+                                    <input asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#basic-settings">Basic Settings</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="basic-settings">
+                        <div class="panel-body">
+                            <div class="col-md-6">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="OrganisationGeneralSettings.GoogleTagManagerId" class="control-label"></label>
+                                    <input asp-for="OrganisationGeneralSettings.GoogleTagManagerId" class="form-control" />
+                                    <span asp-validation-for="OrganisationGeneralSettings.GoogleTagManagerId" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="OrganisationGeneralSettings.WebsiteBaseUrl" class="control-label"></label>
+                                    <input asp-for="OrganisationGeneralSettings.WebsiteBaseUrl" class="form-control" />
+                                    <span asp-validation-for="OrganisationGeneralSettings.WebsiteBaseUrl" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#mandrill-settings">Mandrill Settings</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="mandrill-settings">
+                        <div class="panel-body">
+                            <div class="col-md-6">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="OrganisationMandrillSettings.ApiKey" class="control-label"></label>
+                                    <input asp-for="OrganisationMandrillSettings.ApiKey" class="form-control" />
+                                    <span asp-validation-for="OrganisationMandrillSettings.ApiKey" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="OrganisationMandrillSettings.FromEmail" class="control-label"></label>
+                                    <input asp-for="OrganisationMandrillSettings.FromEmail" class="form-control" />
+                                    <span asp-validation-for="OrganisationMandrillSettings.FromEmail" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">
+                            <a class="collapsed" data-parent="#accordion" data-toggle="collapse" href="#social-settings">Social Settings</a>
+                        </h4>
+                    </div>
+                    <div class="panel-collapse collapse" id="social-settings">
+                        <div class="panel-body">
+                            <div class="col-md-6">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="OrganisationSocialSettings.FacebookId" class="control-label"></label>
+                                    <input asp-for="OrganisationSocialSettings.FacebookId" class="form-control" />
+                                    <span asp-validation-for="OrganisationSocialSettings.FacebookId" class="text-danger"></span>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
