@@ -12,6 +12,8 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System.ComponentModel.DataAnnotations;
+
 namespace LeadGeneration.Models
 {
     /// <summary>
@@ -29,12 +31,14 @@ namespace LeadGeneration.Models
         ///     Gets or sets the API key.
         /// </summary>
         /// <value>The API key.</value>
+        [Display(Name = "Api Key")]
         public string ApiKey { get; set; }
 
         /// <summary>
         ///     Gets or sets from email.
         /// </summary>
         /// <value>From email.</value>
+        [Display(Name = "From Email")]
         public string FromEmail { get; set; }
     }
 }

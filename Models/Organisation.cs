@@ -13,6 +13,7 @@
 // ***********************************************************************
 
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using Newtonsoft.Json;
 
 namespace LeadGeneration.Models
@@ -32,6 +33,7 @@ namespace LeadGeneration.Models
         ///     Gets or sets the name.
         /// </summary>
         /// <value>The name.</value>
+        [Display(Name = "Organisation Name")]
         public string Name { get; set; }
 
         /// <summary>

@@ -12,6 +12,7 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LeadGeneration.Models
@@ -31,6 +32,7 @@ namespace LeadGeneration.Models
         ///     Gets or sets the background image.
         /// </summary>
         /// <value>The background image.</value>
+        [Display(Name = "Background Image")]
         public string BackgroundImage { get; set; }
 
         /// <summary>
@@ -44,6 +46,7 @@ namespace LeadGeneration.Models
         ///     Gets or sets the footer text.
         /// </summary>
         /// <value>The footer text.</value>
+        [Display(Name = "Footer Text")]
         public string FooterText { get; set; }
 
         /// <summary>
@@ -110,12 +113,14 @@ namespace LeadGeneration.Models
         ///     Gets or sets the facebook title.
         /// </summary>
         /// <value>The facebook title.</value>
+        [Display(Name = "Facebook Title")]
         public string FacebookTitle { get; set; }
 
         /// <summary>
         ///     Gets or sets the facebook description.
         /// </summary>
         /// <value>The facebook description.</value>
+        [Display(Name = "Facebook Description")]
         public string FacebookDescription { get; set; }
 
         /// <summary>
@@ -129,12 +134,14 @@ namespace LeadGeneration.Models
         ///     Gets or sets the facebook image.
         /// </summary>
         /// <value>The facebook image.</value>
+        [Display(Name = "Facebook Image")]
         public string FacebookImage { get; set; }
 
         /// <summary>
         ///     Gets or sets the twitter message.
         /// </summary>
         /// <value>The twitter message.</value>
+        [Display(Name = "Twitter Message")]
         public string TwitterMessage { get; set; }
     }
 
@@ -154,18 +161,21 @@ namespace LeadGeneration.Models
         ///     Gets or sets the main text.
         /// </summary>
         /// <value>The main text.</value>
+        [Display(Name = "Main Text")]
         public string MainText { get; set; }
 
         /// <summary>
         ///     Gets or sets the secondary text.
         /// </summary>
         /// <value>The secondary text.</value>
+        [Display(Name = "Secondary Text")]
         public string SecondaryText { get; set; }
 
         /// <summary>
         ///     Gets or sets the header image.
         /// </summary>
         /// <value>The header image.</value>
+        [Display(Name = "Header Image")]
         public string HeaderImage { get; set; }
 
         /// <summary>
@@ -179,6 +189,7 @@ namespace LeadGeneration.Models
         ///     Gets or sets the footer image.
         /// </summary>
         /// <value>The footer image.</value>
+        [Display(Name = "Footer Image")]
         public string FooterImage { get; set; }
 
         /// <summary>
@@ -204,12 +215,14 @@ namespace LeadGeneration.Models
         ///     Gets or sets the main text.
         /// </summary>
         /// <value>The main text.</value>
+        [Display(Name = "Main Text")]
         public string MainText { get; set; }
 
         /// <summary>
         ///     Gets or sets the secondary text.
         /// </summary>
         /// <value>The secondary text.</value>
+        [Display(Name = "Secondary Text")]
         public string SecondaryText { get; set; }
 
         /// <summary>
@@ -223,6 +236,7 @@ namespace LeadGeneration.Models
         ///     Gets or sets the header image.
         /// </summary>
         /// <value>The header image.</value>
+        [Display(Name = "Header Image")]
         public string HeaderImage { get; set; }
 
 
@@ -237,6 +251,7 @@ namespace LeadGeneration.Models
         ///     Gets or sets the footer image.
         /// </summary>
         /// <value>The footer image.</value>
+        [Display(Name = "Footer Image")]
         public string FooterImage { get; set; }
     }
 
@@ -255,12 +270,14 @@ namespace LeadGeneration.Models
         ///     Gets or sets the title.
         /// </summary>
         /// <value>The title.</value>
+        [Display(Name = "Title")]
         public string Title { get; set; }
 
         /// <summary>
         ///     Gets or sets the content.
         /// </summary>
         /// <value>The content.</value>
+        [Display(Name = "Content")]
         public string Content { get; set; }
     }
 }

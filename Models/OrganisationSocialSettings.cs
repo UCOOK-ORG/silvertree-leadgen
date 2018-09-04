@@ -12,6 +12,8 @@
 // <summary></summary>
 // ***********************************************************************
 
+using System.ComponentModel.DataAnnotations;
+
 namespace LeadGeneration.Models
 {
     /// <summary>
@@ -29,6 +31,7 @@ namespace LeadGeneration.Models
         ///     Gets or sets the facebook identifier.
         /// </summary>
         /// <value>The facebook identifier.</value>
+        [Display(Name = "Facebook Id")]
         public string FacebookId { get; set; }
     }
 }
