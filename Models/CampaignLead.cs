@@ -22,6 +22,12 @@ namespace LeadGeneration.Models
     /// </summary>
     public class CampaignLead
     {
+
+        public CampaignLead()
+        {
+            EmailReferrals = new HashSet<CampaignEmailReferral>();
+        }
+
         /// <summary>
         ///     Gets or sets the identifier.
         /// </summary>
@@ -93,6 +99,6 @@ namespace LeadGeneration.Models
         ///     Gets or sets the email referrals.
         /// </summary>
         /// <value>The email referrals.</value>
-        public ICollection<CampaignEmailReferral> EmailReferrals { get; set; }
+        public virtual ICollection<CampaignEmailReferral> EmailReferrals { get; set; }
     }
 }
