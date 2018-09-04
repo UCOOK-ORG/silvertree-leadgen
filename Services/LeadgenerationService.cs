@@ -31,7 +31,7 @@ namespace LeadGeneration.Services
         /// <summary>
         ///     The cache
         /// </summary>
-        private readonly MemoryCache _cache;
+        private readonly IMemoryCache _cache;
 
         /// <summary>
         ///     The context
@@ -43,7 +43,7 @@ namespace LeadGeneration.Services
         /// </summary>
         /// <param name="context">The context.</param>
         /// <param name="cache">The cache.</param>
-        public LeadGenerationService(ApplicationDbContext context, MemoryCache cache)
+        public LeadGenerationService(ApplicationDbContext context, IMemoryCache cache)
         {
             _context = context;
             _cache = cache;

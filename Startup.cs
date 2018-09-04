@@ -37,6 +37,8 @@ namespace LeadGeneration
                 .AddEntityFrameworkStores<ApplicationDbContext>()
                 .AddDefaultTokenProviders();
 
+            services.AddMemoryCache();
+
             // Add application services.
             services.AddTransient<EmailSender>();
             services.AddTransient<LeadGenerationService>();
@@ -54,7 +56,6 @@ namespace LeadGeneration
             {
                 c.SwaggerDoc("v1", new Info { Title = "Lead Generation API", Version = "v1" });
             });
-
 
 
             services.AddMvc();
