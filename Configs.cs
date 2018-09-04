@@ -17,5 +17,9 @@ namespace LeadGeneration
             /// </summary>
             public static string CloudinaryBaseUrl = "https://res.cloudinary.com/ucook/";
         }
+
+        public static string CampaignCacheKey = "-campaign";
+
+        public static string CampaignSettingsKey = "-campaignSettings";
     }
 }

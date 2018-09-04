@@ -19,6 +19,7 @@ using Hangfire;
 using LeadGeneration.Data;
 using LeadGeneration.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace LeadGeneration.Services
 {
@@ -28,6 +29,11 @@ namespace LeadGeneration.Services
     public class LeadGenerationService
     {
         /// <summary>
+        ///     The cache
+        /// </summary>
+        private readonly MemoryCache _cache;
+
+        /// <summary>
         ///     The context
         /// </summary>
         private readonly ApplicationDbContext _context;
@@ -36,9 +42,11 @@ namespace LeadGeneration.Services
         ///     Initializes a new instance of the <see cref="LeadGenerationService" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public LeadGenerationService(ApplicationDbContext context)
+        /// <param name="cache">The cache.</param>
+        public LeadGenerationService(ApplicationDbContext context, MemoryCache cache)
         {
             _context = context;
+            _cache = cache;
         }
 
         /// <summary>
@@ -57,6 +65,12 @@ namespace LeadGeneration.Services
             if (id == null && string.IsNullOrEmpty(slug))
                 throw new Exception("Please specify a valid Campaign Id or Campaign Slug");
 
+            var lookupKey = (id != null ? id.ToString() : slug) + Configs.CampaignCacheKey;
+
+            var existingCampaign = _cache.Get<Campaign>(lookupKey);
+
+            if (existingCampaign != null) return existingCampaign;
+
             var campaignQuery = _context.Campaigns
                 .Include(a => a.CampaignSettings)
                 .Include(a => a.CampaignContent)
@@ -73,6 +87,8 @@ namespace LeadGeneration.Services
                 : campaignQuery.LastOrDefault(a => a.Slug == slug);
 
             if (campaign == null) throw new Exception("Could not find matching campaign");
+
+            _cache.Set(lookupKey, campaign, TimeSpan.FromSeconds(120));
 
             return campaign;
         }
@@ -118,15 +134,23 @@ namespace LeadGeneration.Services
             if (existingLead != null) throw new Exception("You have already signed up for this competition");
 
 
-            var campaign = _context.Campaigns
-                .Include(a => a.CampaignSettings)
-                .Include(a => a.Organisation)
-                .ThenInclude(a => a.OrganisationMandrillSettings)
-                .Include(a => a.Organisation)
-                .ThenInclude(a => a.OrganisationGeneralSettings)
-                .FirstOrDefault(a => a.Id == campaignId);
+            var lookupKey = campaignId + Configs.CampaignSettingsKey;
+            var existingCampaign = _cache.Get<Campaign>(lookupKey);
 
-            if (campaign == null) throw new Exception("Could not find matching campaign");
+            if (existingCampaign == null)
+            {
+                existingCampaign = _context.Campaigns
+                    .Include(a => a.CampaignSettings)
+                    .Include(a => a.Organisation)
+                    .ThenInclude(a => a.OrganisationMandrillSettings)
+                    .Include(a => a.Organisation)
+                    .ThenInclude(a => a.OrganisationGeneralSettings)
+                    .FirstOrDefault(a => a.Id == campaignId);
+
+                if (existingCampaign == null) throw new Exception("Could not find matching campaign");
+
+                _cache.Set(lookupKey, existingCampaign, TimeSpan.FromMinutes(5));
+            }
 
             var newLead = new CampaignLead
             {
@@ -136,7 +160,7 @@ namespace LeadGeneration.Services
                 Email = email,
                 ReferralId = referralId,
                 UtmSource = source,
-                UtmCampaign = campaign.Slug,
+                UtmCampaign = existingCampaign.Slug,
                 UtmMedium = medium
             };
 
@@ -152,12 +176,8 @@ namespace LeadGeneration.Services
                 {
                     var emailReferral = referralLead.EmailReferrals.FirstOrDefault(a => a.Email == email);
                     if (emailReferral != null)
-                    {
                         emailReferral.Status = "Success";
-                        _context.CampaignLeads.Update(referralLead);
-                    }
                     else
-                    {
                         referralLead.EmailReferrals.Add(new CampaignEmailReferral
                         {
                             Status = "Success",
@@ -165,12 +185,13 @@ namespace LeadGeneration.Services
                             Name = name,
                             Surname = surname
                         });
-                    }
+                    _context.CampaignLeads.Update(referralLead);
+                    _context.SaveChanges();
                 }
             }
 
-            var campaignSettings = campaign.CampaignSettings;
-            var organisationMandrillSettings = campaign.Organisation.OrganisationMandrillSettings;
+            var campaignSettings = existingCampaign.CampaignSettings;
+            var organisationMandrillSettings = existingCampaign.Organisation.OrganisationMandrillSettings;
 
             var data = new Dictionary<string, object>
             {
@@ -178,8 +199,8 @@ namespace LeadGeneration.Services
                 {"LeadSurname", surname},
                 {
                     "WebsiteUrl",
-                    string.Format("{0}/e/{1}", campaign.Organisation.OrganisationGeneralSettings.WebsiteBaseUrl,
-                        campaign.Slug)
+                    string.Format("{0}/e/{1}", existingCampaign.Organisation.OrganisationGeneralSettings.WebsiteBaseUrl,
+                        existingCampaign.Slug)
                 }
             };
 
@@ -209,7 +230,6 @@ namespace LeadGeneration.Services
 
             if (lead == null) throw new Exception("Could not find you in our database");
 
-
             return lead;
         }
 
@@ -228,14 +248,6 @@ namespace LeadGeneration.Services
 
             var lead = _context.CampaignLeads
                 .Include(a => a.EmailReferrals)
-                .Include(a => a.Campaign)
-                .ThenInclude(a => a.CampaignSettings)
-                .Include(a => a.Campaign)
-                .ThenInclude(a => a.Organisation)
-                .ThenInclude(a => a.OrganisationMandrillSettings)
-                .Include(a => a.Campaign)
-                .ThenInclude(a => a.Organisation)
-                .ThenInclude(a => a.OrganisationGeneralSettings)
                 .FirstOrDefault(a => a.Id == senderId);
 
             if (lead == null) throw new Exception("Could not find matching sender you in our database");
@@ -255,8 +267,27 @@ namespace LeadGeneration.Services
             _context.CampaignLeads.Update(lead);
             _context.SaveChanges();
 
-            var campaignSettings = lead.Campaign.CampaignSettings;
-            var organisationMandrillSettings = lead.Campaign.Organisation.OrganisationMandrillSettings;
+            var lookupKey = lead.CampaignId + Configs.CampaignSettingsKey;
+            var existingCampaign = _cache.Get<Campaign>(lookupKey);
+
+            if (existingCampaign == null)
+            {
+                existingCampaign = _context.Campaigns
+                    .Include(a => a.CampaignSettings)
+                    .Include(a => a.Organisation)
+                    .ThenInclude(a => a.OrganisationMandrillSettings)
+                    .Include(a => a.Organisation)
+                    .ThenInclude(a => a.OrganisationGeneralSettings)
+                    .FirstOrDefault(a => a.Id == lead.CampaignId);
+
+                if (existingCampaign == null) throw new Exception("Could not find matching campaign");
+
+                _cache.Set(lookupKey, existingCampaign, TimeSpan.FromMinutes(5));
+            }
+
+
+            var campaignSettings = existingCampaign.CampaignSettings;
+            var organisationMandrillSettings = existingCampaign.Organisation.OrganisationMandrillSettings;
 
             var data = new Dictionary<string, object>
             {
@@ -265,7 +296,8 @@ namespace LeadGeneration.Services
                 {"ReferralSurname", surname},
                 {
                     "ReferralUrl",
-                    string.Format("{0}/r/{1}/e", lead.Campaign.Organisation.OrganisationGeneralSettings.WebsiteBaseUrl,
+                    string.Format("{0}/r/{1}/e",
+                        existingCampaign.Organisation.OrganisationGeneralSettings.WebsiteBaseUrl,
                         lead.Campaign.Slug)
                 }
             };
