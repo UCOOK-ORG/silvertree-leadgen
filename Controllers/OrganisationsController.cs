@@ -17,14 +17,15 @@ using System.Threading.Tasks;
 using System.Web.Http;
 using LeadGeneration.Data;
 using LeadGeneration.Models;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace LeadGeneration.Controllers
 {
     /// <summary>
-    ///     Class OrganisationsController.
-    ///     Implements the <see cref="Microsoft.AspNetCore.Mvc.Controller" />
+    /// Class OrganisationsController.
+    /// Implements the <see cref="Microsoft.AspNetCore.Mvc.Controller" />
     /// </summary>
     /// <seealso cref="Microsoft.AspNetCore.Mvc.Controller" />
     [Authorize]
@@ -32,26 +33,36 @@ namespace LeadGeneration.Controllers
     public class OrganisationsController : Controller
     {
         /// <summary>
-        ///     The context
+        /// The context
         /// </summary>
         private readonly ApplicationDbContext _context;
 
         /// <summary>
-        ///     Initializes a new instance of the <see cref="OrganisationsController" /> class.
+        /// The user manager
+        /// </summary>
+        private readonly UserManager<ApplicationUser> _userManager;
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="OrganisationsController" /> class.
         /// </summary>
         /// <param name="context">The context.</param>
-        public OrganisationsController(ApplicationDbContext context)
+        /// <param name="userManager">The user manager.</param>
+        public OrganisationsController(ApplicationDbContext context, UserManager<ApplicationUser> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Organisations
         /// <summary>
-        ///     Indexes this instance.
+        /// Indexes this instance.
         /// </summary>
         /// <returns>Task&lt;IActionResult&gt;.</returns>
         public async Task<IActionResult> Index()
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+            if (user == null) return RedirectToAction("Login", "Account");
+
             var applicationDbContext = _context.Organisations
                 .Include(o => o.OrganisationGeneralSettings)
                 .Include(o => o.OrganisationMandrillSettings)
@@ -61,7 +72,7 @@ namespace LeadGeneration.Controllers
 
         // GET: Organisations/Create
         /// <summary>
-        ///     Creates this instance.
+        /// Creates this instance.
         /// </summary>
         /// <returns>IActionResult.</returns>
         public IActionResult Create()
@@ -73,7 +84,7 @@ namespace LeadGeneration.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         /// <summary>
-        ///     Creates the specified organisation.
+        /// Creates the specified organisation.
         /// </summary>
         /// <param name="organisation">The organisation.</param>
         /// <returns>Task&lt;IActionResult&gt;.</returns>
@@ -93,7 +104,7 @@ namespace LeadGeneration.Controllers
 
         // GET: Organisations/Edit/5
         /// <summary>
-        ///     Edits the specified identifier.
+        /// Edits the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>Task&lt;IActionResult&gt;.</returns>
@@ -115,7 +126,7 @@ namespace LeadGeneration.Controllers
         // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         /// <summary>
-        ///     Edits the specified identifier.
+        /// Edits the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <param name="organisation">The organisation.</param>
@@ -148,7 +159,7 @@ namespace LeadGeneration.Controllers
 
         // GET: Organisations/Delete/5
         /// <summary>
-        ///     Deletes the specified identifier.
+        /// Deletes the specified identifier.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>Task&lt;IActionResult&gt;.</returns>
@@ -168,7 +179,7 @@ namespace LeadGeneration.Controllers
 
         // POST: Organisations/Delete/5
         /// <summary>
-        ///     Deletes the confirmed.
+        /// Deletes the confirmed.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns>Task&lt;IActionResult&gt;.</returns>
@@ -184,7 +195,7 @@ namespace LeadGeneration.Controllers
         }
 
         /// <summary>
-        ///     Organisations the exists.
+        /// Organisations the exists.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns><c>true</c> if XXXX, <c>false</c> otherwise.</returns>
