@@ -298,7 +298,7 @@ namespace LeadGeneration.Services
                     "ReferralUrl",
                     string.Format("{0}/r/{1}/e",
                         existingCampaign.Organisation.OrganisationGeneralSettings.WebsiteBaseUrl,
-                        lead.Campaign.Slug)
+                        lead.Id)
                 }
             };
 
