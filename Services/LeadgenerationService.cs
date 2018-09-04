@@ -224,7 +224,8 @@ namespace LeadGeneration.Services
         /// <exception cref="Exception">Could not find you in our database</exception>
         public CampaignLead SignIn(string email, string phone, int campaignId)
         {
-            var lead = _context.CampaignLeads.FirstOrDefault(a => a.Email == email.Trim().ToUpperInvariant()
+            email = email.Trim().ToUpperInvariant();
+            var lead = _context.CampaignLeads.FirstOrDefault(a => a.Email == email
                                                                   && a.Phone == phone.Trim()
                                                                   && a.CampaignId == campaignId);
 
